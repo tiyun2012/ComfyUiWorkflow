@@ -1,0 +1,833 @@
+{
+  "last_node_id": 17,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        -1050,
+        -180
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ctrolnet1.jpg"
+      ],
+      "title": "1. LOAD CAMERA / SCREENSHOT"
+    },
+    {
+      "id": 2,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -1050,
+        270
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            6
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            4,
+            5
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            3,
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "dreamshaper_8.safetensors"
+      ],
+      "title": "2. SD1.5 COLOR MODEL"
+    },
+    {
+      "id": 3,
+      "type": "VAEEncode",
+      "pos": [
+        -650,
+        -120
+      ],
+      "size": [
+        300,
+        120
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 2
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode"
+      },
+      "widgets_values": [],
+      "title": "Encode the captured face"
+    },
+    {
+      "id": 4,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -650,
+        150
+      ],
+      "size": [
+        440,
+        220
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "preserve the exact facial silhouette, proportions and identity from the input photo, stylized face paint, clean graphic color blocks, crisp edges, even lighting, projection-ready face texture, centered front view"
+      ],
+      "title": "EDIT THIS: color / material treatment"
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -650,
+        420
+      ],
+      "size": [
+        440,
+        220
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "deformed face, changed identity, different facial proportions, extra eyes, extra mouth, duplicate face, asymmetry, blur, noisy skin, harsh shadows, busy background, text, logo, watermark, cropped face"
+      ],
+      "title": "Avoid deformation and background"
+    },
+    {
+      "id": 6,
+      "type": "KSampler",
+      "pos": [
+        -120,
+        30
+      ],
+      "size": [
+        340,
+        280
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 6
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 7
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 8
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        123456789,
+        "randomize",
+        22,
+        6.5,
+        "dpmpp_2m",
+        "karras",
+        0.35
+      ],
+      "title": "Low denoise keeps the camera face recognizable"
+    },
+    {
+      "id": 7,
+      "type": "VAEDecode",
+      "pos": [
+        300,
+        40
+      ],
+      "size": [
+        240,
+        100
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 10
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": [],
+      "title": "Decode colored face"
+    },
+    {
+      "id": 8,
+      "type": "LoadBackgroundRemovalModel",
+      "pos": [
+        300,
+        360
+      ],
+      "size": [
+        340,
+        120
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "bg_model",
+          "type": "BACKGROUND_REMOVAL",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadBackgroundRemovalModel"
+      },
+      "widgets_values": [
+        "birefnet.safetensors"
+      ],
+      "title": "Local BiRefNet background removal"
+    },
+    {
+      "id": 9,
+      "type": "RemoveBackground",
+      "pos": [
+        700,
+        360
+      ],
+      "size": [
+        320,
+        140
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "bg_removal_model",
+          "type": "BACKGROUND_REMOVAL",
+          "link": 12
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            14,
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RemoveBackground"
+      },
+      "widgets_values": [],
+      "title": "Detect the original face boundary"
+    },
+    {
+      "id": 10,
+      "type": "InvertMask",
+      "pos": [
+        1080,
+        290
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "InvertMask"
+      },
+      "widgets_values": [],
+      "title": "Convert foreground mask to alpha input"
+    },
+    {
+      "id": 11,
+      "type": "JoinImageWithAlpha",
+      "pos": [
+        1430,
+        20
+      ],
+      "size": [
+        330,
+        130
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 15
+        },
+        {
+          "name": "alpha",
+          "type": "MASK",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "JoinImageWithAlpha"
+      },
+      "widgets_values": [],
+      "title": "Apply transparency to colored result"
+    },
+    {
+      "id": 12,
+      "type": "SaveImage",
+      "pos": [
+        1810,
+        20
+      ],
+      "size": [
+        360,
+        320
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 17
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "3D_Face_Color_RGBA"
+      ],
+      "title": "OUTPUT 1: colored transparent PNG"
+    },
+    {
+      "id": 13,
+      "type": "ThresholdMask",
+      "pos": [
+        1080,
+        500
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ThresholdMask"
+      },
+      "widgets_values": [
+        0.5
+      ],
+      "title": "Make a crisp stencil edge"
+    },
+    {
+      "id": 14,
+      "type": "MaskToImage",
+      "pos": [
+        1430,
+        500
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskToImage"
+      },
+      "widgets_values": [],
+      "title": "White face / black background"
+    },
+    {
+      "id": 15,
+      "type": "SaveImage",
+      "pos": [
+        1810,
+        500
+      ],
+      "size": [
+        360,
+        320
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 20
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "3D_Face_Stencil"
+      ],
+      "title": "OUTPUT 2: grayscale stencil PNG"
+    },
+    {
+      "id": 16,
+      "type": "Note",
+      "pos": [
+        -1050,
+        680
+      ],
+      "size": [
+        500,
+        430
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "Note"
+      },
+      "widgets_values": [
+        "CAMERA FACE COLOR + PROJECTION WORKFLOW\n\n1) Upload a screenshot or camera capture in the LoadImage node.\n2) Edit the green positive prompt to describe face paint, a material, or color palette.\n3) Keep denoise at 0.25-0.45 to preserve the captured face. Increase it only for a stronger style change.\n4) Run the workflow. SaveImage always writes PNG files.\n\n3D_Face_Color_RGBA is an RGBA PNG with transparent background.\n3D_Face_Stencil is a white-face / black-background mask. Set ThresholdMask to 0.35 for softer edges or 0.65 for a harder cut.\n\nBiRefNet uses the original capture for the boundary, so the generated colors do not change the projection silhouette. Use a close-up or a plain background for the cleanest face mask."
+      ]
+    },
+    {
+      "id": 17,
+      "type": "ResizeAndPadImage",
+      "pos": [
+        -650,
+        -390
+      ],
+      "size": [
+        360,
+        180
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2,
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ResizeAndPadImage"
+      },
+      "widgets_values": [
+        512,
+        512,
+        "white",
+        "lanczos"
+      ],
+      "title": "Fit capture to a square canvas without distortion"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      17,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      3,
+      2,
+      2,
+      3,
+      1,
+      "VAE"
+    ],
+    [
+      4,
+      2,
+      1,
+      4,
+      0,
+      "CLIP"
+    ],
+    [
+      5,
+      2,
+      1,
+      5,
+      0,
+      "CLIP"
+    ],
+    [
+      6,
+      2,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      7,
+      4,
+      0,
+      6,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      8,
+      5,
+      0,
+      6,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      9,
+      3,
+      0,
+      6,
+      3,
+      "LATENT"
+    ],
+    [
+      10,
+      6,
+      0,
+      7,
+      0,
+      "LATENT"
+    ],
+    [
+      11,
+      2,
+      2,
+      7,
+      1,
+      "VAE"
+    ],
+    [
+      12,
+      8,
+      0,
+      9,
+      0,
+      "BACKGROUND_REMOVAL"
+    ],
+    [
+      13,
+      17,
+      0,
+      9,
+      1,
+      "IMAGE"
+    ],
+    [
+      14,
+      9,
+      0,
+      10,
+      0,
+      "MASK"
+    ],
+    [
+      15,
+      7,
+      0,
+      11,
+      0,
+      "IMAGE"
+    ],
+    [
+      16,
+      10,
+      0,
+      11,
+      1,
+      "MASK"
+    ],
+    [
+      17,
+      11,
+      0,
+      12,
+      0,
+      "IMAGE"
+    ],
+    [
+      18,
+      9,
+      0,
+      13,
+      0,
+      "MASK"
+    ],
+    [
+      19,
+      13,
+      0,
+      14,
+      0,
+      "MASK"
+    ],
+    [
+      20,
+      14,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7,
+      "offset": [
+        760,
+        350
+      ]
+    },
+    "workflowRenderer": "flat"
+  },
+  "version": 0.4
+}

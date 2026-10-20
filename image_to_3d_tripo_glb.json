@@ -1,0 +1,210 @@
+{
+  "last_node_id": 5,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        -850,
+        -120
+      ],
+      "size": [
+        360,
+        360
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ctrolnet1.jpg"
+      ],
+      "title": "1. UPLOAD ONE IMAGE"
+    },
+    {
+      "id": 2,
+      "type": "TripoImageToModelNodeV2",
+      "pos": [
+        -300,
+        -80
+      ],
+      "size": [
+        440,
+        420
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model task_id",
+          "type": "TRIPO_TASK_ID",
+          "links": []
+        },
+        {
+          "name": "GLB",
+          "type": "FILE_3D_GLB",
+          "links": [
+            2,
+            3
+          ]
+        },
+        {
+          "name": "FBX",
+          "type": "FILE_3D_FBX",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "TripoImageToModelNodeV2"
+      },
+      "widgets_values": [],
+      "title": "2. GENERATE TEXTURED 3D MODEL (TRIPO)"
+    },
+    {
+      "id": 3,
+      "type": "SaveGLB",
+      "pos": [
+        300,
+        -120
+      ],
+      "size": [
+        340,
+        150
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "FILE_3D_GLB",
+          "link": 2
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveGLB"
+      },
+      "widgets_values": [
+        "3D/Tripo_Image_Model"
+      ],
+      "title": "3. SAVE GLB FOR YOUR 3D APP"
+    },
+    {
+      "id": 4,
+      "type": "Preview3D",
+      "pos": [
+        300,
+        100
+      ],
+      "size": [
+        360,
+        300
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model_file",
+          "type": "FILE_3D_GLB",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "Preview3D"
+      },
+      "widgets_values": [],
+      "title": "Preview generated model"
+    },
+    {
+      "id": 5,
+      "type": "Note",
+      "pos": [
+        -850,
+        420
+      ],
+      "size": [
+        560,
+        470
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "Note"
+      },
+      "widgets_values": [
+        "IMAGE TO 3D ASSET (TRIPO CLOUD)\n\nUpload a clear image of a single object with the subject fully visible. The Tripo node generates a textured GLB and an FBX output.\n\nRecommended starting settings in the Tripo node: texture ON, PBR ON, texture quality standard, geometry quality standard, orientation align_image, face limit 200000 for a manageable game asset.\n\nThis node uses the connected Tripo / Comfy API service and may require a Comfy account or API key. Generation is a paid cloud operation; the exact price is shown on the node.\n\nThe saved GLB is in D:\\ComfyUI\\output\\3D\\Tripo_Image_Model_*.glb (the exact extension is chosen by the node). Import it into Blender, Unity, Unreal, or your projection app.\n\nOne image cannot recover hidden sides exactly. For a better asset, use a clean background, a centered object, and a second multi-view workflow when available."
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      1,
+      3,
+      0,
+      "FILE_3D_GLB"
+    ],
+    [
+      3,
+      2,
+      1,
+      4,
+      0,
+      "FILE_3D_GLB"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.75,
+      "offset": [
+        720,
+        340
+      ]
+    },
+    "workflowRenderer": "flat"
+  },
+  "version": 0.4
+}
