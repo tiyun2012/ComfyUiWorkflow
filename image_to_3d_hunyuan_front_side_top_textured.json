@@ -1,0 +1,1683 @@
+{
+  "last_node_id": 34,
+  "last_link_id": 40,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        -1280,
+        140
+      ],
+      "size": [
+        380,
+        340
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "front_reference.png",
+        "image"
+      ],
+      "title": "1. FRONT REFERENCE"
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [
+        -850,
+        140
+      ],
+      "size": [
+        380,
+        340
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            4
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "left_reference.png",
+        "image"
+      ],
+      "title": "2. LEFT REFERENCE"
+    },
+    {
+      "id": 3,
+      "type": "LoadImage",
+      "pos": [
+        -420,
+        140
+      ],
+      "size": [
+        380,
+        340
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "back_reference.png",
+        "image"
+      ],
+      "title": "3. BACK REFERENCE"
+    },
+    {
+      "id": 4,
+      "type": "ImageOnlyCheckpointLoader",
+      "pos": [
+        -1280,
+        -170
+      ],
+      "size": [
+        400,
+        120
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            10
+          ]
+        },
+        {
+          "name": "CLIP_VISION",
+          "type": "CLIP_VISION",
+          "links": [
+            1,
+            3,
+            5
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageOnlyCheckpointLoader"
+      },
+      "widgets_values": [
+        "hunyuan3d-dit-v2-mv_fp16.safetensors"
+      ],
+      "title": "4. HUNYUAN 3D MULTI-VIEW MODEL"
+    },
+    {
+      "id": 5,
+      "type": "CLIPVisionEncode",
+      "pos": [
+        -1280,
+        560
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": 1
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CLIP_VISION_OUTPUT",
+          "type": "CLIP_VISION_OUTPUT",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPVisionEncode"
+      },
+      "widgets_values": [
+        "none"
+      ],
+      "title": "Encode front"
+    },
+    {
+      "id": 6,
+      "type": "CLIPVisionEncode",
+      "pos": [
+        -850,
+        560
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": 3
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CLIP_VISION_OUTPUT",
+          "type": "CLIP_VISION_OUTPUT",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPVisionEncode"
+      },
+      "widgets_values": [
+        "none"
+      ],
+      "title": "Encode left"
+    },
+    {
+      "id": 7,
+      "type": "CLIPVisionEncode",
+      "pos": [
+        -420,
+        560
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": 5
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CLIP_VISION_OUTPUT",
+          "type": "CLIP_VISION_OUTPUT",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPVisionEncode"
+      },
+      "widgets_values": [
+        "none"
+      ],
+      "title": "Encode back"
+    },
+    {
+      "id": 8,
+      "type": "Hunyuan3Dv2ConditioningMultiView",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        380,
+        150
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "front",
+          "type": "CLIP_VISION_OUTPUT",
+          "link": 7
+        },
+        {
+          "name": "left",
+          "type": "CLIP_VISION_OUTPUT",
+          "link": 8
+        },
+        {
+          "name": "back",
+          "type": "CLIP_VISION_OUTPUT",
+          "link": 9
+        },
+        {
+          "name": "right",
+          "type": "CLIP_VISION_OUTPUT",
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            11
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3Dv2ConditioningMultiView"
+      },
+      "widgets_values": [],
+      "title": "5. MULTI-VIEW CONDITIONING (front + left + back + right)"
+    },
+    {
+      "id": 9,
+      "type": "EmptyLatentHunyuan3Dv2",
+      "pos": [
+        40,
+        430
+      ],
+      "size": [
+        330,
+        120
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentHunyuan3Dv2"
+      },
+      "widgets_values": [
+        1536,
+        1
+      ],
+      "title": "Resolution / VRAM"
+    },
+    {
+      "id": 10,
+      "type": "ModelSamplingAuraFlow",
+      "pos": [
+        40,
+        0
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ModelSamplingAuraFlow"
+      },
+      "widgets_values": [
+        1.0,
+        "flow"
+      ],
+      "title": "Flow sampling"
+    },
+    {
+      "id": 11,
+      "type": "KSampler",
+      "pos": [
+        470,
+        160
+      ],
+      "size": [
+        360,
+        280
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 14
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 11
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 12
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        123456789,
+        "randomize",
+        20,
+        7.5,
+        "euler",
+        "normal",
+        1.0
+      ],
+      "title": "6. GENERATE 3D LATENT"
+    },
+    {
+      "id": 12,
+      "type": "VAEDecodeHunyuan3D",
+      "pos": [
+        880,
+        160
+      ],
+      "size": [
+        350,
+        150
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 15
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VOXEL",
+          "type": "VOXEL",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecodeHunyuan3D"
+      },
+      "widgets_values": [
+        8000,
+        192
+      ],
+      "title": "Decode volume"
+    },
+    {
+      "id": 13,
+      "type": "VoxelToMesh",
+      "pos": [
+        1260,
+        160
+      ],
+      "size": [
+        340,
+        130
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "voxel",
+          "type": "VOXEL",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MESH",
+          "type": "MESH",
+          "links": [
+            18,
+            19,
+            24
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VoxelToMesh"
+      },
+      "widgets_values": [
+        "surface net",
+        0.6
+      ],
+      "title": "7. CONVERT TO MESH"
+    },
+    {
+      "id": 14,
+      "type": "SaveGLB",
+      "pos": [
+        1660,
+        80
+      ],
+      "size": [
+        360,
+        150
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "link": 18
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveGLB"
+      },
+      "widgets_values": [
+        "3D/Hunyuan_FourView"
+      ],
+      "title": "8. SAVE GRAY GLB (LOCAL)"
+    },
+    {
+      "id": 15,
+      "type": "RenderMesh",
+      "pos": [
+        1660,
+        300
+      ],
+      "size": [
+        380,
+        190
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            20
+          ]
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RenderMesh"
+      },
+      "widgets_values": [
+        "solid",
+        1024,
+        1024,
+        "#000000"
+      ],
+      "title": "Render mesh preview"
+    },
+    {
+      "id": 16,
+      "type": "SaveImage",
+      "pos": [
+        2070,
+        300
+      ],
+      "size": [
+        380,
+        120
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 20
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "Hunyuan_FourView_Preview"
+      ],
+      "title": "Save preview PNG"
+    },
+    {
+      "id": 17,
+      "type": "Note",
+      "pos": [
+        -1280,
+        760
+      ],
+      "size": [
+        760,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "Note"
+      },
+      "widgets_values": [
+        "IMAGE TO 3D WITH FOUR CARDINAL REFERENCES\n\nThis native Hunyuan multi-view model expects four views around one single character: FRONT, LEFT, BACK, RIGHT. Load four separate images of the same character, centered at a similar scale and with matching pose/lighting. Do not use a collage or repeat one composite image.\n\nThe included smoke-test crops are from one snail reference sheet: front_reference.png, left_reference.png, back_reference.png, and a mirrored left profile for right_reference.png. Replace these with your own four consistent views for production. A TOP view is not a supported input in this ComfyUI node.\n\nThe multi-view checkpoint is hunyuan3d-dit-v2-mv_fp16.safetensors. RTX 3060 12 GB: start at resolution 2048-3072, batch 1, octree 192-256. SaveGLB writes output/3D/Hunyuan_FourView_*.glb and the preview is a PNG."
+      ],
+      "title": "How to use"
+    },
+    {
+      "id": 18,
+      "type": "LoadImage",
+      "pos": [
+        10,
+        140
+      ],
+      "size": [
+        380,
+        340
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            22
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "right_reference.png",
+        "image"
+      ],
+      "title": "4. RIGHT REFERENCE"
+    },
+    {
+      "id": 19,
+      "type": "CLIPVisionEncode",
+      "pos": [
+        10,
+        560
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": 21
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CLIP_VISION_OUTPUT",
+          "type": "CLIP_VISION_OUTPUT",
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPVisionEncode"
+      },
+      "widgets_values": [
+        "none"
+      ],
+      "title": "Encode right"
+    },
+    {
+      "id": 20,
+      "type": "UnwrapMesh",
+      "pos": [
+        1660,
+        620
+      ],
+      "size": [
+        360,
+        210
+      ],
+      "flags": {},
+      "order": 120,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "links": [
+            25,
+            35
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UnwrapMesh"
+      },
+      "widgets_values": [
+        "pec",
+        1024,
+        2,
+        0.0
+      ],
+      "title": "9. LOCAL UV UNWRAP"
+    },
+    {
+      "id": 21,
+      "type": "RenderUVAtlas",
+      "pos": [
+        2070,
+        620
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 121,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            26
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RenderUVAtlas"
+      },
+      "widgets_values": [
+        1024
+      ],
+      "title": "UV atlas PNG"
+    },
+    {
+      "id": 22,
+      "type": "SaveImage",
+      "pos": [
+        2450,
+        620
+      ],
+      "size": [
+        315,
+        58
+      ],
+      "flags": {},
+      "order": 122,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 26
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "Hunyuan_FourView_UV_Atlas"
+      ],
+      "title": "Save UV atlas PNG"
+    },
+    {
+      "id": 23,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        40,
+        900
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 123,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            27
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            28,
+            29
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            30
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "dreamshaper_8.safetensors"
+      ],
+      "title": "10. LOCAL TEXTURE MODEL (GENERATED \u2014 NOT REFERENCE MATCHED)"
+    },
+    {
+      "id": 24,
+      "type": "CLIPTextEncode",
+      "pos": [
+        430,
+        820
+      ],
+      "size": [
+        430,
+        200
+      ],
+      "flags": {},
+      "order": 124,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            31
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "seamless hand-painted stylized snail material texture, warm ochre shell with darker spiral bands, muted green body, subtle roughness, evenly distributed detail, orthographic texture sheet, no object silhouette, no borders, no seams, no text, no logo"
+      ],
+      "title": "Texture prompt (edit this)"
+    },
+    {
+      "id": 25,
+      "type": "CLIPTextEncode",
+      "pos": [
+        430,
+        1080
+      ],
+      "size": [
+        430,
+        200
+      ],
+      "flags": {},
+      "order": 125,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 29
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            32
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "seams, border, frame, perspective, 3d render, object, furniture, text, letters, logo, watermark, blurry, low contrast, harsh lighting"
+      ],
+      "title": "Texture negative prompt"
+    },
+    {
+      "id": 26,
+      "type": "EmptyLatentImage",
+      "pos": [
+        430,
+        1340
+      ],
+      "size": [
+        315,
+        106
+      ],
+      "flags": {},
+      "order": 126,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            33
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        768,
+        768,
+        1
+      ],
+      "title": "Texture resolution / VRAM"
+    },
+    {
+      "id": 27,
+      "type": "KSampler",
+      "pos": [
+        940,
+        900
+      ],
+      "size": [
+        315,
+        262
+      ],
+      "flags": {},
+      "order": 127,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 27
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 31
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 32
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 33
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            34
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        246813579,
+        "fixed",
+        16,
+        7.0,
+        "dpmpp_2m",
+        "karras",
+        1.0
+      ],
+      "title": "Generate texture"
+    },
+    {
+      "id": 28,
+      "type": "VAEDecode",
+      "pos": [
+        1320,
+        900
+      ],
+      "size": [
+        210,
+        80
+      ],
+      "flags": {},
+      "order": 128,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 34
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            36,
+            40
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": [],
+      "title": "Texture image"
+    },
+    {
+      "id": 29,
+      "type": "ApplyTextureToMesh",
+      "pos": [
+        1660,
+        900
+      ],
+      "size": [
+        390,
+        180
+      ],
+      "flags": {},
+      "order": 129,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "link": 35
+        },
+        {
+          "name": "base_color",
+          "type": "IMAGE",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "links": [
+            37,
+            38
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ApplyTextureToMesh"
+      },
+      "widgets_values": [],
+      "title": "11. APPLY GENERATED TEXTURE (NOT REFERENCE MATCHED)"
+    },
+    {
+      "id": 30,
+      "type": "SaveGLB",
+      "pos": [
+        2110,
+        900
+      ],
+      "size": [
+        360,
+        150
+      ],
+      "flags": {},
+      "order": 130,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "link": 37
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveGLB"
+      },
+      "widgets_values": [
+        "3D/Hunyuan_FourView_Textured"
+      ],
+      "title": "12. SAVE LOCAL GENERATED TEXTURED GLB"
+    },
+    {
+      "id": 31,
+      "type": "RenderMesh",
+      "pos": [
+        2110,
+        1140
+      ],
+      "size": [
+        380,
+        190
+      ],
+      "flags": {},
+      "order": 131,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "link": 38
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            39
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RenderMesh"
+      },
+      "widgets_values": [
+        "texture",
+        1024,
+        1024,
+        "#202020"
+      ],
+      "title": "Textured preview"
+    },
+    {
+      "id": 32,
+      "type": "SaveImage",
+      "pos": [
+        2520,
+        1140
+      ],
+      "size": [
+        315,
+        58
+      ],
+      "flags": {},
+      "order": 132,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 39
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "Hunyuan_FourView_Textured_Preview"
+      ],
+      "title": "Save textured preview PNG"
+    },
+    {
+      "id": 33,
+      "type": "MarkdownNote",
+      "pos": [
+        40,
+        1530
+      ],
+      "size": [
+        960,
+        260
+      ],
+      "flags": {},
+      "order": 133,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "LOCAL TEXTURE \u2014 NO API\n\nThis is a fully local DreamShaper texture branch. It generates a new texture from the prompt and does not automatically match the reference images. No API token or cloud upload is used.\n\nFor closer reference colors, edit the texture prompt and use the same palette as your reference. The local four-view Hunyuan geometry branch remains private and local."
+      ],
+      "title": "LOCAL TEXTURE \u2014 NO API"
+    },
+    {
+      "id": 34,
+      "type": "SaveImage",
+      "pos": [
+        1660,
+        1160
+      ],
+      "size": [
+        315,
+        58
+      ],
+      "flags": {},
+      "order": 134,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 40
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "Hunyuan_FourView_Texture_PNG"
+      ],
+      "title": "Save generated texture PNG"
+    }
+  ],
+  "links": [
+    [
+      1,
+      4,
+      1,
+      5,
+      0,
+      "CLIP_VISION"
+    ],
+    [
+      2,
+      1,
+      0,
+      5,
+      1,
+      "IMAGE"
+    ],
+    [
+      3,
+      4,
+      1,
+      6,
+      0,
+      "CLIP_VISION"
+    ],
+    [
+      4,
+      2,
+      0,
+      6,
+      1,
+      "IMAGE"
+    ],
+    [
+      5,
+      4,
+      1,
+      7,
+      0,
+      "CLIP_VISION"
+    ],
+    [
+      6,
+      3,
+      0,
+      7,
+      1,
+      "IMAGE"
+    ],
+    [
+      7,
+      5,
+      0,
+      8,
+      0,
+      "CLIP_VISION_OUTPUT"
+    ],
+    [
+      8,
+      6,
+      0,
+      8,
+      1,
+      "CLIP_VISION_OUTPUT"
+    ],
+    [
+      9,
+      7,
+      0,
+      8,
+      2,
+      "CLIP_VISION_OUTPUT"
+    ],
+    [
+      10,
+      4,
+      0,
+      10,
+      0,
+      "MODEL"
+    ],
+    [
+      11,
+      8,
+      0,
+      11,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      12,
+      8,
+      1,
+      11,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      13,
+      9,
+      0,
+      11,
+      3,
+      "LATENT"
+    ],
+    [
+      14,
+      10,
+      0,
+      11,
+      0,
+      "MODEL"
+    ],
+    [
+      15,
+      11,
+      0,
+      12,
+      0,
+      "LATENT"
+    ],
+    [
+      16,
+      4,
+      2,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      17,
+      12,
+      0,
+      13,
+      0,
+      "VOXEL"
+    ],
+    [
+      18,
+      13,
+      0,
+      14,
+      0,
+      "MESH"
+    ],
+    [
+      19,
+      13,
+      0,
+      15,
+      0,
+      "MESH"
+    ],
+    [
+      20,
+      15,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      21,
+      4,
+      1,
+      19,
+      0,
+      "CLIP_VISION"
+    ],
+    [
+      22,
+      18,
+      0,
+      19,
+      1,
+      "IMAGE"
+    ],
+    [
+      23,
+      19,
+      0,
+      8,
+      3,
+      "CLIP_VISION_OUTPUT"
+    ],
+    [
+      24,
+      13,
+      0,
+      20,
+      0,
+      "MESH"
+    ],
+    [
+      25,
+      20,
+      0,
+      21,
+      0,
+      "MESH"
+    ],
+    [
+      26,
+      21,
+      0,
+      22,
+      0,
+      "IMAGE"
+    ],
+    [
+      27,
+      23,
+      0,
+      27,
+      0,
+      "MODEL"
+    ],
+    [
+      28,
+      23,
+      1,
+      24,
+      0,
+      "CLIP"
+    ],
+    [
+      29,
+      23,
+      1,
+      25,
+      0,
+      "CLIP"
+    ],
+    [
+      30,
+      23,
+      2,
+      28,
+      1,
+      "VAE"
+    ],
+    [
+      31,
+      24,
+      0,
+      27,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      32,
+      25,
+      0,
+      27,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      33,
+      26,
+      0,
+      27,
+      3,
+      "LATENT"
+    ],
+    [
+      34,
+      27,
+      0,
+      28,
+      0,
+      "LATENT"
+    ],
+    [
+      35,
+      20,
+      0,
+      29,
+      0,
+      "MESH"
+    ],
+    [
+      36,
+      28,
+      0,
+      29,
+      1,
+      "IMAGE"
+    ],
+    [
+      37,
+      29,
+      0,
+      30,
+      0,
+      "MESH"
+    ],
+    [
+      38,
+      29,
+      0,
+      31,
+      0,
+      "MESH"
+    ],
+    [
+      39,
+      31,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ],
+    [
+      40,
+      28,
+      0,
+      34,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.42,
+      "offset": [
+        620,
+        270
+      ]
+    },
+    "workflowRenderer": "flat",
+    "note": "Fully local workflow. No API token or cloud upload. Texture is generated from the prompt and may not exactly match the reference."
+  },
+  "version": 0.4
+}
