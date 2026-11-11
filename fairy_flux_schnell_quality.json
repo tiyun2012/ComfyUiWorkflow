@@ -1,9 +1,9 @@
 {
-  "last_node_id": 10,
-  "last_link_id": 10,
+  "last_node_id": 110,
+  "last_link_id": 110,
   "nodes": [
     {
-      "id": 1,
+      "id": 101,
       "type": "UNETLoader",
       "pos": [
         -1000,
@@ -22,7 +22,7 @@
           "name": "MODEL",
           "type": "MODEL",
           "links": [
-            1
+            101
           ]
         }
       ],
@@ -33,10 +33,10 @@
         "flux1-schnell.safetensors",
         "default"
       ],
-      "title": "1. FLUX.1 SCHNELL MODEL"
+      "title": "101. FLUX.1 SCHNELL MODEL"
     },
     {
-      "id": 2,
+      "id": 102,
       "type": "DualCLIPLoader",
       "pos": [
         -1000,
@@ -55,7 +55,7 @@
           "name": "CLIP",
           "type": "CLIP",
           "links": [
-            3
+            103
           ]
         }
       ],
@@ -68,10 +68,10 @@
         "flux",
         "default"
       ],
-      "title": "2. FLUX TEXT ENCODERS"
+      "title": "102. FLUX TEXT ENCODERS"
     },
     {
-      "id": 3,
+      "id": 103,
       "type": "VAELoader",
       "pos": [
         -1000,
@@ -90,7 +90,7 @@
           "name": "VAE",
           "type": "VAE",
           "links": [
-            7
+            107
           ]
         }
       ],
@@ -100,10 +100,10 @@
       "widgets_values": [
         "ae.safetensors"
       ],
-      "title": "3. FLUX VAE"
+      "title": "103. FLUX VAE"
     },
     {
-      "id": 4,
+      "id": 104,
       "type": "ModelSamplingFlux",
       "pos": [
         -560,
@@ -120,7 +120,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 1
+          "link": 101
         }
       ],
       "outputs": [
@@ -128,7 +128,7 @@
           "name": "MODEL",
           "type": "MODEL",
           "links": [
-            2
+            102
           ]
         }
       ],
@@ -141,10 +141,10 @@
         512,
         768
       ],
-      "title": "4. FLUX SIZE-AWARE SAMPLING"
+      "title": "104. FLUX SIZE-AWARE SAMPLING"
     },
     {
-      "id": 5,
+      "id": 105,
       "type": "CLIPTextEncode",
       "pos": [
         -560,
@@ -161,7 +161,7 @@
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 3
+          "link": 103
         }
       ],
       "outputs": [
@@ -169,8 +169,8 @@
           "name": "CONDITIONING",
           "type": "CONDITIONING",
           "links": [
-            4,
-            5
+            104,
+            105
           ]
         }
       ],
@@ -180,10 +180,10 @@
       "widgets_values": [
         "a tiny high quality fairy character, full body, short silver hair, teal moth wings, a tasteful acorn dress, holding a warm golden lantern, standing in a moonlit fern forest, cinematic fantasy film still, carefully drawn face, natural eyes, symmetrical facial features, correct anatomy, relaxed balanced pose, both hands visible, clear wing structure, soft rim light, firefly particles, atmospheric depth, rich emerald and gold palette, highly detailed, centered subject, clean silhouette, consistent character design, suitable as a clip keyframe"
       ],
-      "title": "5. POSITIVE PROMPT"
+      "title": "105. POSITIVE PROMPT"
     },
     {
-      "id": 6,
+      "id": 106,
       "type": "ConditioningZeroOut",
       "pos": [
         -40,
@@ -200,7 +200,7 @@
         {
           "name": "conditioning",
           "type": "CONDITIONING",
-          "link": 5
+          "link": 105
         }
       ],
       "outputs": [
@@ -208,7 +208,7 @@
           "name": "CONDITIONING",
           "type": "CONDITIONING",
           "links": [
-            5
+            106
           ]
         }
       ],
@@ -216,10 +216,10 @@
         "Node name for S&R": "ConditioningZeroOut"
       },
       "widgets_values": [],
-      "title": "6. FLUX EMPTY NEGATIVE"
+      "title": "106. FLUX EMPTY NEGATIVE"
     },
     {
-      "id": 7,
+      "id": 107,
       "type": "EmptySD3LatentImage",
       "pos": [
         -40,
@@ -238,7 +238,7 @@
           "name": "LATENT",
           "type": "LATENT",
           "links": [
-            8
+            108
           ]
         }
       ],
@@ -250,10 +250,10 @@
         768,
         1
       ],
-      "title": "7. 512x768 VRAM-SAFE CANVAS"
+      "title": "107. 512x768 VRAM-SAFE CANVAS"
     },
     {
-      "id": 8,
+      "id": 108,
       "type": "KSampler",
       "pos": [
         380,
@@ -270,22 +270,22 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 2
+          "link": 102
         },
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 4
+          "link": 104
         },
         {
           "name": "negative",
           "type": "CONDITIONING",
-          "link": 6
+          "link": 106
         },
         {
           "name": "latent_image",
           "type": "LATENT",
-          "link": 8
+          "link": 108
         }
       ],
       "outputs": [
@@ -293,7 +293,7 @@
           "name": "LATENT",
           "type": "LATENT",
           "links": [
-            9
+            109
           ]
         }
       ],
@@ -309,10 +309,10 @@
         "simple",
         1.0
       ],
-      "title": "8. SCHNELL 4-STEP SAMPLER"
+      "title": "108. SCHNELL 4-STEP SAMPLER"
     },
     {
-      "id": 9,
+      "id": 109,
       "type": "VAEDecode",
       "pos": [
         820,
@@ -329,12 +329,12 @@
         {
           "name": "samples",
           "type": "LATENT",
-          "link": 9
+          "link": 109
         },
         {
           "name": "vae",
           "type": "VAE",
-          "link": 7
+          "link": 107
         }
       ],
       "outputs": [
@@ -342,7 +342,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            10
+            110
           ]
         }
       ],
@@ -350,10 +350,10 @@
         "Node name for S&R": "VAEDecode"
       },
       "widgets_values": [],
-      "title": "9. DECODE"
+      "title": "109. DECODE"
     },
     {
-      "id": 10,
+      "id": 110,
       "type": "SaveImage",
       "pos": [
         1130,
@@ -370,7 +370,7 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 10
+          "link": 110
         }
       ],
       "outputs": [],
@@ -380,87 +380,87 @@
       "widgets_values": [
         "Fairy_Flux_Schnell"
       ],
-      "title": "10. SAVE FLUX PNG"
+      "title": "110. SAVE FLUX PNG"
     }
   ],
   "links": [
     [
-      1,
-      1,
+      101,
+      101,
       0,
-      4,
-      0,
-      "MODEL"
-    ],
-    [
-      2,
-      4,
-      0,
-      8,
+      104,
       0,
       "MODEL"
     ],
     [
-      3,
-      2,
+      102,
+      104,
       0,
-      5,
+      108,
+      0,
+      "MODEL"
+    ],
+    [
+      103,
+      102,
+      0,
+      105,
       0,
       "CLIP"
     ],
     [
-      4,
-      5,
+      104,
+      105,
       0,
-      8,
+      108,
       1,
       "CONDITIONING"
     ],
     [
-      5,
-      5,
+      105,
+      105,
       0,
-      6,
+      106,
       0,
       "CONDITIONING"
     ],
     [
-      6,
-      6,
+      106,
+      106,
       0,
-      8,
+      108,
       2,
       "CONDITIONING"
     ],
     [
-      7,
-      3,
+      107,
+      103,
       0,
-      9,
-      0,
+      109,
+      1,
       "VAE"
     ],
     [
-      8,
-      7,
+      108,
+      107,
       0,
-      8,
+      108,
       3,
       "LATENT"
     ],
     [
-      9,
-      8,
+      109,
+      108,
       0,
-      9,
+      109,
       0,
       "LATENT"
     ],
     [
-      10,
-      9,
+      110,
+      109,
       0,
-      10,
+      110,
       0,
       "IMAGE"
     ]
